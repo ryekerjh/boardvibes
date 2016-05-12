@@ -598,6 +598,7 @@ function cff_style_page() {
         'cff_show_shared_links'     => true,
         'cff_show_date'             => true,
         'cff_show_media'            => true,
+        'cff_show_media_link'       => true,
         'cff_show_event_title'      => true,
         'cff_show_event_details'    => true,
         'cff_show_meta'             => true,
@@ -730,6 +731,8 @@ function cff_style_page() {
         'cff_show_facebook_share'   => true,
 
         'cff_translate_photos_text' => 'photos',
+        'cff_translate_photo_text'  => 'Photo',
+        'cff_translate_video_text'  => 'Video',
 
         //Translate - date
         'cff_translate_second'      => 'second',
@@ -767,6 +770,7 @@ function cff_style_page() {
     $cff_show_shared_links = $options[ 'cff_show_shared_links' ];
     $cff_show_date = $options[ 'cff_show_date' ];
     $cff_show_media = $options[ 'cff_show_media' ];
+    $cff_show_media_link = $options[ 'cff_show_media_link' ];
     $cff_show_event_title = $options[ 'cff_show_event_title' ];
     $cff_show_event_details = $options[ 'cff_show_event_details' ];
     $cff_show_meta = $options[ 'cff_show_meta' ];
@@ -841,6 +845,8 @@ function cff_style_page() {
     $cff_translate_ago = $options[ 'cff_translate_ago' ];
     //Photos translate
     $cff_translate_photos_text = $options[ 'cff_translate_photos_text' ];
+    $cff_translate_photo_text = $options[ 'cff_translate_photo_text' ];
+    $cff_translate_video_text = $options[ 'cff_translate_video_text' ];
 
     //View on Facebook link
     $cff_link_size = $options[ 'cff_link_size' ];
@@ -976,6 +982,7 @@ function cff_style_page() {
             (isset($_POST[ 'cff_show_shared_links' ]) ) ? $cff_show_shared_links = $_POST[ 'cff_show_shared_links' ] : $cff_show_shared_links = '';
             (isset($_POST[ 'cff_show_date' ]) ) ? $cff_show_date = $_POST[ 'cff_show_date' ] : $cff_show_date = '';
             (isset($_POST[ 'cff_show_media' ]) ) ? $cff_show_media = $_POST[ 'cff_show_media' ] : $cff_show_media = '';
+            (isset($_POST[ 'cff_show_media_link' ]) ) ? $cff_show_media_link = $_POST[ 'cff_show_media_link' ] : $cff_show_media_link = '';
             (isset($_POST[ 'cff_show_event_title' ]) ) ? $cff_show_event_title = $_POST[ 'cff_show_event_title' ] : $cff_show_event_title = '';
             (isset($_POST[ 'cff_show_event_details' ]) ) ? $cff_show_event_details = $_POST[ 'cff_show_event_details' ] : $cff_show_event_details = '';
             (isset($_POST[ 'cff_show_meta' ]) ) ? $cff_show_meta = $_POST[ 'cff_show_meta' ] : $cff_show_meta = '';
@@ -995,6 +1002,7 @@ function cff_style_page() {
             $options[ 'cff_show_shared_links' ] = $cff_show_shared_links;
             $options[ 'cff_show_date' ] = $cff_show_date;
             $options[ 'cff_show_media' ] = $cff_show_media;
+            $options[ 'cff_show_media_link' ] = $cff_show_media_link;
             $options[ 'cff_show_event_title' ] = $cff_show_event_title;
             $options[ 'cff_show_event_details' ] = $cff_show_event_details;
             $options[ 'cff_show_meta' ] = $cff_show_meta;
@@ -1311,6 +1319,8 @@ function cff_style_page() {
 
             //Social translate
             if (isset($_POST[ 'cff_translate_photos_text' ])) $cff_translate_photos_text = $_POST[ 'cff_translate_photos_text' ];
+            if (isset($_POST[ 'cff_translate_photo_text' ])) $cff_translate_photo_text = $_POST[ 'cff_translate_photo_text' ];
+            if (isset($_POST[ 'cff_translate_video_text' ])) $cff_translate_video_text = $_POST[ 'cff_translate_video_text' ];
 
             //Date translate
             if (isset($_POST[ 'cff_translate_second' ])) $cff_translate_second = $_POST[ 'cff_translate_second' ];
@@ -1337,6 +1347,8 @@ function cff_style_page() {
 
             //Social translate
             $options[ 'cff_translate_photos_text' ] = $cff_translate_photos_text;
+            $options[ 'cff_translate_photo_text' ] = $cff_translate_photo_text;
+            $options[ 'cff_translate_video_text' ] = $cff_translate_video_text;
 
             //Date translate
             $options[ 'cff_translate_second' ] = $cff_translate_second;
@@ -1581,6 +1593,11 @@ function cff_style_page() {
                             <div>
                                 <input type="checkbox" id="cff_show_media" disabled />
                                 <label for="cff_show_media"><?php _e('Photos/videos', 'custom-facebook-feed'); ?></label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="cff_show_media_link" id="cff_show_media_link" <?php if($cff_show_media_link == true) echo 'checked="checked"' ?> />
+                                <label for="cff_show_media_link"><?php _e('Media link', 'custom-facebook-feed'); ?></label><a class="cff-tooltip-link" href="JavaScript:void(0);"><?php _e('What is this?'); ?></a>
+                                <p class="cff-tooltip cff-more-info"><?php _e('Display an icon and link to Facebook if the post contains either a photo or video'); ?></p>
                             </div>
                             <div>
                                 <input type="checkbox" name="cff_show_shared_links" id="cff_show_shared_links" <?php if($cff_show_shared_links == true) echo 'checked="checked"' ?> />
@@ -2887,6 +2904,7 @@ function cff_style_page() {
                 <span>Quick links: </span>
                 <a href="#text">Post Text</a>
                 <a href="#action">Post Action Links</a>
+                <a href="#medialink">Media Links</a>
                 <a href="#date">Date</a>
             </p>
 
@@ -2930,10 +2948,22 @@ function cff_style_page() {
                         <td class="cff-context"><?php _e('Used for sharing the Facebook post via Social Media', 'custom-facebook-feed'); ?></td>
                     </tr>
 
-                    <tr id="date"><!-- Quick link -->
+                    <tr id="medialink"><!-- Quick link -->
                         <td><label for="cff_translate_photos_text" class="bump-left"><?php _e('photos', 'custom-facebook-feed'); ?></label></td>
                         <td><input name="cff_translate_photos_text" type="text" value="<?php echo stripslashes( esc_attr( $cff_translate_photos_text ) ); ?>" /></td>
                         <td class="cff-context"><?php _e('Added to the end of an album name. Eg. (6 photos)', 'custom-facebook-feed'); ?></td>
+                    </tr>
+
+                    <tr class="cff-table-header"><th colspan="3"><?php _e('Media Links', 'custom-facebook-feed'); ?></th></tr>
+                    <tr>
+                        <td><label for="cff_translate_photo_text" class="bump-left"><?php _e('Photo', 'custom-facebook-feed'); ?></label></td>
+                        <td><input name="cff_translate_photo_text" type="text" value="<?php echo stripslashes( esc_attr( $cff_translate_photo_text ) ); ?>" /></td>
+                        <td class="cff-context"><?php _e('Used to link to photos on Facebook', 'custom-facebook-feed'); ?></td>
+                    </tr>
+                    <tr id="date"><!-- Quick link -->
+                        <td><label for="cff_translate_video_text" class="bump-left"><?php _e('Video', 'custom-facebook-feed'); ?></label></td>
+                        <td><input name="cff_translate_video_text" type="text" value="<?php echo stripslashes( esc_attr( $cff_translate_video_text ) ); ?>" /></td>
+                        <td class="cff-context"><?php _e('Used to link to videos on Facebook', 'custom-facebook-feed'); ?></td>
                     </tr>
                     
                     <tr class="cff-table-header"><th colspan="3"><?php _e('Date', 'custom-facebook-feed'); ?></th></tr>

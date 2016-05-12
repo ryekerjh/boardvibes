@@ -45,6 +45,17 @@
 	background-repeat:no-repeat;
 }
 
+/***fvpps***/
+.hugeslider #hugeslider #slider-lists  li.active input {
+	margin:3px 4px 0px 0px;
+	background:#f2f2f2;
+	outline:none;
+	width:auto;
+	box-shadow:none;
+	border:0px;
+	width: 90px;
+}
+/***fvpps***/
 
 #sliders-list  li a,#sliders-list  li a:link,#sliders-list  li a:visited {
 	display:block;
