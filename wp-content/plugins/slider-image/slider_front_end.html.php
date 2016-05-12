@@ -995,6 +995,15 @@ $GLOBALS['changespeed']=$slider[0]->param;
 	});     
     </script>
 <style>
+
+.imgc_slider #slider77 {
+	border-color: aqua;
+    border-width: 3px;
+	text-transform: uppercase;
+	list-style: none;
+	outline: none;
+}
+
 	.thumb_image{
 		  position: absolute;
 		  width: 100%;

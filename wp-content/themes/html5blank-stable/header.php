@@ -37,7 +37,7 @@
 								</button>
 							</div>
 							<div class="logo pull-left">
-									<a href="<?php home_url ?>"><h1>Board Vibes</h1></a>
+									<a href="<?php echo home_url(); ?>"><h1>Board Vibes</h1></a>
 							</div>
 					    <!-- Collect the nav links, forms, and other content for toggling -->
 					    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

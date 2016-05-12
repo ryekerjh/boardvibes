@@ -1,7 +1,7 @@
 		<!-- footer -->
-		<footer class="footer row" role="contentinfo">
+		<footer class="footer container-fluid" role="contentinfo">
 
-					<div class="col-sm-4 col-xs-12 center">
+					<div class="col-sm-4 col-xs-12 center social">
 						<a href="" target="_blank"><i class="fa fa-facebook fa-3x " aria-hidden="true"></i></a>
 						<a href="" target="_blank"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
 						<a href="" target="_blank"><i class="fa fa-instagram fa-3x" aria-hidden="true"></i></a>

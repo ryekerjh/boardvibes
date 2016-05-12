@@ -3,7 +3,7 @@
 Plugin Name: Custom Facebook Feed
 Plugin URI: http://smashballoon.com/custom-facebook-feed
 Description: Add completely customizable Facebook feeds to your WordPress site
-Version: 2.4
+Version: 2.4.1.2
 Author: Smash Balloon
 Author URI: http://smashballoon.com/
 License: GPLv2 or later
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //Include admin
 include dirname( __FILE__ ) .'/custom-facebook-feed-admin.php';
 
-define('CFFVER', '2.4');
+define('CFFVER', '2.4.1.2');
 
 // Add shortcodes
 add_shortcode('custom-facebook-feed', 'display_cff');
@@ -42,6 +42,11 @@ function display_cff($atts) {
     if($options[ 'cff_show_shared_links' ]) $include_string .= 'sharedlinks,';
     if($options[ 'cff_show_date' ]) $include_string .= 'date,';
     if($options[ 'cff_show_media' ]) $include_string .= 'media,';
+    if( isset($options[ 'cff_show_media_link' ]) ){ //If not set yet then show link by default
+        if($options[ 'cff_show_media_link' ]) $include_string .= 'medialink,';
+    } else {
+        $include_string .= 'medialink,';
+    }    
     if($options[ 'cff_show_event_title' ]) $include_string .= 'eventtitle,';
     if($options[ 'cff_show_event_details' ]) $include_string .= 'eventdetails,';
     if($options[ 'cff_show_meta' ]) $include_string .= 'social,';
@@ -183,6 +188,8 @@ function display_cff($atts) {
         'seemoretext' => isset( $options[ 'cff_see_more_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_see_more_text' ] ) ) : '',
         'seelesstext' => isset( $options[ 'cff_see_less_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_see_less_text' ] ) ) : '',
         'photostext' => isset( $options[ 'cff_translate_photos_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_photos_text' ] ) ) : '',
+        'phototext' => isset( $options[ 'cff_translate_photo_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_photo_text' ] ) ) : '',
+        'videotext' => isset( $options[ 'cff_translate_video_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_video_text' ] ) ) : '',        
 
         'facebooklinktext' => isset( $options[ 'cff_facebook_link_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_facebook_link_text' ] ) ) : '',
         'sharelinktext' => isset( $options[ 'cff_facebook_share_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_facebook_share_text' ] ) ) : '',
@@ -256,6 +263,7 @@ function display_cff($atts) {
     $cff_show_shared_links = false;
     $cff_show_date = false;
     $cff_show_media = false;
+    $cff_show_media_link = false;
     $cff_show_event_title = false;
     $cff_show_event_details = false;
     $cff_show_meta = false;
@@ -267,6 +275,7 @@ function display_cff($atts) {
     if ( stripos($cff_includes, 'sharedlink') !== false ) $cff_show_shared_links = true;
     if ( stripos($cff_includes, 'date') !== false ) $cff_show_date = true;
     if ( stripos($cff_includes, 'media') !== false ) $cff_show_media = true;
+    if ( stripos($cff_includes, 'medialink') !== false ) $cff_show_media_link = true;
     if ( stripos($cff_includes, 'eventtitle') !== false ) $cff_show_event_title = true;
     if ( stripos($cff_includes, 'eventdetail') !== false ) $cff_show_event_details = true;
     if ( stripos($cff_includes, 'social') !== false ) $cff_show_meta = true;
@@ -283,6 +292,7 @@ function display_cff($atts) {
     if ( stripos($cff_excludes, 'sharedlink') !== false ) $cff_show_shared_links = false;
     if ( stripos($cff_excludes, 'date') !== false ) $cff_show_date = false;
     if ( stripos($cff_excludes, 'media') !== false ) $cff_show_media = false;
+    if ( stripos($cff_excludes, 'medialink') !== false ) $cff_show_media_link = false;
     if ( stripos($cff_excludes, 'eventtitle') !== false ) $cff_show_event_title = false;
     if ( stripos($cff_excludes, 'eventdetail') !== false ) $cff_show_event_details = false;
     if ( stripos($cff_excludes, 'social') !== false ) $cff_show_meta = false;
@@ -622,21 +632,23 @@ function display_cff($atts) {
 
     //If there's no Access Token then use a default
     $access_token_array = array(
-        '1489500477999288|KFys5ppNi3sreihdreqPkU2ChIE',
-        '859332767418162|BR-YU8zjzvonNrszlll_1a4y_xE',
-        '360558880785446|4jyruti_VkxxK7gS7JeyX-EuSXs',
-        '1487072591579718|0KQzP-O2E4mvFCPxTLWP1b87I4Q',
-        '640861236031365|2rENQzxtWtG12DtlZwqfZ6Vu6BE',
-        '334487440086538|hI_NNy1NvxQiQxm-TtXsrmoCVaE',
-        '755471677869105|Jxv8xVDad7vUUTauk8K2o71wG2w',
-        '518353204973067|dA7YTe-k8eSvgZ8lqa51xSm16DA',
-        '444286039063163|5qkYu2qxpERWO3gcs2f3nxeqhpg',
-        '944793728885704|XJ6QqKK8Ldsssr4n5Qrs2tVr7rs',
-        '1444667452511509|wU7tzWiuj6NadfpHfgkIGLGO86o',
-        '1574171666165548|ZL9tXNXxpnCdAvdUjCX5HtRnsR8'
+        '772762049525257|UksMy-gYmk78WNHVEsimaf8uar4',
+        '1611234219197161|PenH1iYmf3CShpuWiLMrP6_0mro',
+        '842457575860455|MA2WQAK6MO22mYlD1vAfQmY-jNQ',
+        '1598576770461963|t3KRNHf1490G8qEopdGoUiMPJ7I',
+        '1774415812787078|3yGpMpgbH-Nte9YHCfVIQ59RIt8',
+        '762305090538008|KmVsImjHmaJIPTpII9HyOif3yD0',
+        '1741187749472232|b1ZfgQ2OSQZzsQN1lqLn4vjrQV4',
+        '1748310315388907|AMSWRHgAoChtXepfsWU0OxKfVbQ',
+        '1721409114785415|4dIAXp4_utfqkAJS-9X4OXB6GR4',
+        '1609030662756868|nCKsZPN4cI-GsIJsi0DESGGtSgw',
+        '1590773627916704|EbgBWG45AVQZdNrwsAnTl_-CW_A',
+        '227652200958404|AzHtmm3B080elswwLKJrRCKYpGg',
+        '1176842909001332|YIQehZhGPWxqkvmiFn4Klt1PA4U',
+        '217933725249790|h4YSEYX71EO_2el93hiT47uyf5g',
+        '823681761071502|0oAyJYz-MO-jgr8rI3ftrEcBRiQ'
     );
-    if ($access_token == '' || !$cff_show_access_token) $access_token = $access_token_array[rand(0, 11)];
-
+    if ($access_token == '' || !$cff_show_access_token) $access_token = $access_token_array[rand(0, 14)];
 
     //Check whether a Page ID has been defined
     if ($page_id == '') {
@@ -702,8 +714,8 @@ function display_cff($atts) {
     if ( !isset($cff_likebox_width) || empty($cff_likebox_width) || $cff_likebox_width == '' ) $cff_likebox_width = 300;
 
     //Set like box variable
-    isset( $options[ 'cff_app_id' ] ) ? $cff_app_id = $options[ 'cff_app_id' ] : $cff_app_id = '';
-    ( isset($cff_app_id) && !empty($cff_app_id) ) ? $cff_like_box_params = '&app_id=' .$cff_app_id : $cff_like_box_params = '';
+    isset( $options[ 'cff_app_id' ] ) && !empty( $options[ 'cff_app_id' ] ) ? $cff_app_id = $options[ 'cff_app_id' ] : $cff_app_id = '712681982206086';
+    $cff_like_box_params = '&appId=' .$cff_app_id;
     $like_box = '<div class="cff-likebox';
     if ($cff_like_box_outside) $like_box .= ' cff-outside';
     $like_box .= ($cff_like_box_position == 'top') ? ' cff-top' : ' cff-bottom';
@@ -793,8 +805,6 @@ function display_cff($atts) {
     
     //ALL POSTS
     if (!$cff_events_only){
-
-        // $cff_posts_json_url = 'https://graph.facebook.com/' . $page_id . '/' . $graph_query . '?access_token=' . $access_token . '&limit=' . $cff_post_limit . '&locale=' . $cff_locale . $cff_ssl;
 
         $cff_posts_json_url = 'https://graph.facebook.com/' . $page_id . '/' . $graph_query . '?fields=id,from,message,message_tags,story,story_tags,link,source,name,caption,description,type,status_type,object_id,created_time&access_token=' . $access_token . '&limit=' . $cff_post_limit . '&locale=' . $cff_locale . $cff_ssl;
 
@@ -1099,17 +1109,6 @@ function display_cff($atts) {
                     $post_text = htmlspecialchars($news->name);
                     $cff_post_text_type = 'name';
                 }
-                // if ($cff_album) {
-                //     if (!empty($news->name)) {
-                //         $post_text = htmlspecialchars($news->name);
-                //         $cff_post_text_type = 'name';
-                //     }
-                //     if (!empty($news->message) && empty($news->name)) {
-                //         $post_text = htmlspecialchars($news->message);
-                //         $cff_post_text_type = 'message';
-                //     }
-                //     if ($num_photos > 1)  $post_text .= ' (' . trim($num_photos) . ' '.$cff_translate_photos_text.')';
-                // }
 
 
                 //MESSAGE TAGS
@@ -1397,11 +1396,6 @@ function display_cff($atts) {
                 //Link to the Facebook post if it's a link or a video
                 if($cff_post_type == 'link' || $cff_post_type == 'video') $link = "https://www.facebook.com/" . $page_id . "/posts/" . $PostID[1];
 
-                //If it's a shared post then change the link to use the Post ID so that it links to the shared post and not the original post that's being shared
-                if( isset($news->status_type) ){
-                    if( $news->status_type == 'shared_story' ) $link = "https://www.facebook.com/" . $cff_post_id;
-                }
-
                 //Social media sharing URLs
                 $cff_share_facebook = 'https://www.facebook.com/sharer/sharer.php?u=' . urlencode($link);
                 $cff_share_twitter = 'https://twitter.com/intent/tweet?text=' . urlencode($link);
@@ -1409,6 +1403,10 @@ function display_cff($atts) {
                 $cff_share_linkedin = 'https://www.linkedin.com/shareArticle?mini=true&amp;url=' . urlencode($link) . '&amp;title=' . rawurlencode( strip_tags($cff_post_text) );
                 $cff_share_email = 'mailto:?subject=Facebook&amp;body=' . urlencode($link) . '%20-%20' . rawurlencode( strip_tags($cff_post_text) );
 
+                //If it's a shared post then change the link to use the Post ID so that it links to the shared post and not the original post that's being shared
+                if( isset($news->status_type) ){
+                    if( $news->status_type == 'shared_story' ) $link = "https://www.facebook.com/" . $cff_post_id;
+                }
 
                 //If it's an offer post then change the text
                 if ($cff_post_type == 'offer') $link_text = 'View Offer';
@@ -1434,6 +1432,22 @@ function display_cff($atts) {
                 }
 
 
+                /* MEDIA LINK */
+                $cff_translate_photo_text = $atts['phototext'];
+                if (!isset($cff_translate_photo_text) || empty($cff_translate_photo_text)) $cff_translate_photo_text = 'Photo';
+                $cff_translate_video_text = $atts['videotext'];
+                if (!isset($cff_translate_video_text) || empty($cff_translate_video_text)) $cff_translate_video_text = 'Video';
+
+                $cff_media_link = '';
+                if( $cff_show_media_link && ($cff_post_type == 'photo' || $cff_post_type == 'video') ){
+                    $cff_media_link .= '<p class="cff-media-link"><a href="'.$link.'" '.$target.' style="color: #'.$cff_posttext_link_color.';"><i style="padding-right: 5px;" class="fa fa-';
+                    if($cff_post_type == 'photo') $cff_media_link .=  'picture-o"></i>'. $cff_translate_photo_text;
+                    // if($cff_post_type == 'video') $cff_media_link .=  'file-video-o';
+                    if($cff_post_type == 'video') $cff_media_link .=  'video-camera"></i>'. $cff_translate_video_text;
+                    $cff_media_link .= '</a></p>';
+                }
+
+
                 //**************************//
                 //***CREATE THE POST HTML***//
                 //**************************//
@@ -1456,6 +1470,7 @@ function display_cff($atts) {
                     if ($cff_show_date && $cff_date_position == 'above') $cff_post_item .= $cff_date;
                     //POST TEXT
                     if($cff_show_text) $cff_post_item .= $cff_post_text;
+                    
                     //DESCRIPTION
                     if($cff_show_desc && $cff_post_type != 'offer' && $cff_post_type != 'link') $cff_post_item .= $cff_description;
                     //LINK
@@ -1470,6 +1485,9 @@ function display_cff($atts) {
                     if ( (!$cff_show_author && $cff_date_position == 'author') || $cff_show_date && $cff_date_position == 'below') {
                         if($cff_show_date && $cff_post_type == 'event') $cff_post_item .= $cff_date;
                     }
+
+                    //MEDIA LINK
+                    if($cff_show_media_link) $cff_post_item .= $cff_media_link;
                     //VIEW ON FACEBOOK LINK
                     if($cff_show_link) $cff_post_item .= $cff_link;
                 
@@ -1548,6 +1566,20 @@ function cff_fetchUrl($url){
         //Use cURL
         if(is_callable('curl_init')){
             $ch = curl_init();
+            // Use global proxy settings
+            if (defined('WP_PROXY_HOST')) {
+              curl_setopt($ch, CURLOPT_PROXY, WP_PROXY_HOST);
+            }
+            if (defined('WP_PROXY_PORT')) {
+              curl_setopt($ch, CURLOPT_PROXYPORT, WP_PROXY_PORT);
+            }
+            if (defined('WP_PROXY_USERNAME')){
+              $auth = WP_PROXY_USERNAME;
+              if (defined('WP_PROXY_PASSWORD')){
+                $auth .= ':' . WP_PROXY_PASSWORD;
+              }
+              curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth);
+            }
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
@@ -1575,6 +1607,20 @@ function cff_fetchUrl($url){
         //Auto detect
         if(is_callable('curl_init')){
             $ch = curl_init();
+            // Use global proxy settings
+            if (defined('WP_PROXY_HOST')) {
+              curl_setopt($ch, CURLOPT_PROXY, WP_PROXY_HOST);
+            }
+            if (defined('WP_PROXY_PORT')) {
+              curl_setopt($ch, CURLOPT_PROXYPORT, WP_PROXY_PORT);
+            }
+            if (defined('WP_PROXY_USERNAME')){
+              $auth = WP_PROXY_USERNAME;
+              if (defined('WP_PROXY_PASSWORD')){
+                $auth .= ':' . WP_PROXY_PASSWORD;
+              }
+              curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth);
+            }
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
@@ -2004,6 +2050,7 @@ function cff_activate() {
     $options[ 'cff_show_shared_links' ] = true;
     $options[ 'cff_show_date' ] = true;
     $options[ 'cff_show_media' ] = true;
+    $options[ 'cff_show_media_link' ] = true;
     $options[ 'cff_show_event_title' ] = true;
     $options[ 'cff_show_event_details' ] = true;
     $options[ 'cff_show_meta' ] = true;
