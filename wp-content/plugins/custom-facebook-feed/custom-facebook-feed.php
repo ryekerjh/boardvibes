@@ -3,7 +3,7 @@
 Plugin Name: Custom Facebook Feed
 Plugin URI: http://smashballoon.com/custom-facebook-feed
 Description: Add completely customizable Facebook feeds to your WordPress site
-Version: 2.4.1.2
+Version: 2.4.5
 Author: Smash Balloon
 Author URI: http://smashballoon.com/
 License: GPLv2 or later
@@ -23,10 +23,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+define('CFFVER', '2.4.5');
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 //Include admin
 include dirname( __FILE__ ) .'/custom-facebook-feed-admin.php';
-
-define('CFFVER', '2.4.1.2');
 
 // Add shortcodes
 add_shortcode('custom-facebook-feed', 'display_cff');
@@ -194,7 +196,23 @@ function display_cff($atts) {
         'facebooklinktext' => isset( $options[ 'cff_facebook_link_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_facebook_link_text' ] ) ) : '',
         'sharelinktext' => isset( $options[ 'cff_facebook_share_text' ] ) ? stripslashes( esc_attr( $options[ 'cff_facebook_share_text' ] ) ) : '',
         'showfacebooklink' => isset($options[ 'cff_show_facebook_link' ]) ? $options[ 'cff_show_facebook_link' ] : '',
-        'showsharelink' => isset($options[ 'cff_show_facebook_share' ]) ? $options[ 'cff_show_facebook_share' ] : ''
+        'showsharelink' => isset($options[ 'cff_show_facebook_share' ]) ? $options[ 'cff_show_facebook_share' ] : '',
+
+        'secondtext' => isset( $options[ 'cff_translate_second' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_second' ] ) ) : 'second',
+        'secondstext' => isset( $options[ 'cff_translate_seconds' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_seconds' ] ) ) : 'seconds',
+        'minutetext' => isset( $options[ 'cff_translate_minute' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_minute' ] ) ) : 'minute',
+        'minutestext' => isset( $options[ 'cff_translate_minutes' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_minutes' ] ) ) : 'minutes',
+        'hourtext' => isset( $options[ 'cff_translate_hour' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_hour' ] ) ) : 'hour',
+        'hourstext' => isset( $options[ 'cff_translate_hours' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_hours' ] ) ) : 'hours',
+        'daytext' => isset( $options[ 'cff_translate_day' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_day' ] ) ) : 'day',
+        'daystext' => isset( $options[ 'cff_translate_days' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_days' ] ) ) : 'days',
+        'weektext' => isset( $options[ 'cff_translate_week' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_week' ] ) ) : 'week',
+        'weekstext' => isset( $options[ 'cff_translate_weeks' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_weeks' ] ) ) : 'weeks',
+        'monthtext' => isset( $options[ 'cff_translate_month' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_month' ] ) ) : 'month',
+        'monthstext' => isset( $options[ 'cff_translate_months' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_months' ] ) ) : 'months',
+        'yeartext' => isset( $options[ 'cff_translate_year' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_year' ] ) ) : 'year',
+        'yearstext' => isset( $options[ 'cff_translate_years' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_years' ] ) ) : 'years',
+        'agotext' => isset( $options[ 'cff_translate_ago' ] ) ? stripslashes( esc_attr( $options[ 'cff_translate_ago' ] ) ) : 'ago'
 
     ), $atts);
 
@@ -457,6 +475,26 @@ function display_cff($atts) {
     $cff_timezone = $atts['timezone'];
     $cff_orig_timezone = date_default_timezone_get();
     date_default_timezone_set($cff_timezone);
+
+    //Posted ago strings
+    $cff_date_translate_strings = array(
+        'cff_translate_second' => $atts['secondtext'],
+        'cff_translate_seconds' => $atts['secondstext'],
+        'cff_translate_minute' => $atts['minutetext'],
+        'cff_translate_minutes' => $atts['minutestext'],
+        'cff_translate_hour' => $atts['hourtext'],
+        'cff_translate_hours' => $atts['hourstext'],
+        'cff_translate_day' => $atts['daytext'],
+        'cff_translate_days' => $atts['daystext'],
+        'cff_translate_week' => $atts['weektext'],
+        'cff_translate_weeks' => $atts['weekstext'],
+        'cff_translate_month' => $atts['monthtext'],
+        'cff_translate_months' => $atts['monthstext'],
+        'cff_translate_year' => $atts['yeartext'],
+        'cff_translate_years' => $atts['yearstext'],
+        'cff_translate_ago' => $atts['agotext']
+    );
+
     //Link to Facebook
     $cff_link_size = $atts[ 'linksize' ];
     $cff_link_weight = $atts[ 'linkweight' ];
@@ -798,7 +836,7 @@ function display_cff($atts) {
     //Add like box to the inside of the top of feed
     if ($cff_like_box_position == 'top' && $cff_show_like_box && !$cff_like_box_outside) $cff_content .= $like_box;
     //Limit var
-    $i = 0;
+    $i_post = 0;
 
     //Define array for post items
     $cff_posts_array = array();
@@ -813,8 +851,9 @@ function display_cff($atts) {
 
             //Create the transient name
             //Split the Page ID in half and stick it together so we definitely have the beginning and end of it
-            $trans_page_id = substr($page_id, 0, 17) . substr($page_id, -16);
-            $transient_name = 'cff_' . substr($graph_query, 0, 1) . '_' . $trans_page_id . substr($cff_post_limit, 0, 3) . substr($show_posts_by, 0, 2);
+            $trans_page_id = substr($page_id, 0, 16) . substr($page_id, -15);
+            $transient_name = 'cff_' . substr($graph_query, 0, 1) . '_' . $trans_page_id . substr($cff_post_limit, 0, 3) . substr($show_posts_by, 0, 2) . substr($cff_locale, 0, 2);
+
             //Limit to 45 chars max
             $transient_name = substr($transient_name, 0, 45);
 
@@ -938,10 +977,10 @@ function display_cff($atts) {
 
             if ( ($prev_post_message == $pm) && ($prev_post_link == $pl) && ($prev_post_description == $pd) ) $cff_show_post = false;
 
-            //Offset. If the post index ($i) is less than the offset then don't show the post
-            if( intval($i) < intval($atts['offset']) ){
+            //Offset. If the post index ($i_post) is less than the offset then don't show the post
+            if( intval($i_post) < intval($atts['offset']) ){
                 $cff_show_post = false;
-                $i++;
+                $i_post++;
             }
 
             //Check post type and display post if selected
@@ -950,12 +989,12 @@ function display_cff($atts) {
                 //Only create posts for the amount of posts specified
                 if( intval($atts['offset']) > 0 ){
                     //If offset is being used then stop after showing the number of posts + the offset
-                    if ( $i == (intval($show_posts) + intval($atts['offset'])) ) break;
+                    if ( $i_post == (intval($show_posts) + intval($atts['offset'])) ) break;
                 } else {
                     //Else just stop after the number of posts to be displayed is reached
-                    if ( $i == $show_posts ) break;
+                    if ( $i_post == $show_posts ) break;
                 }
-                $i++;
+                $i_post++;
                 //********************************//
                 //***COMPILE SECTION VARIABLES***//
                 //********************************//
@@ -1009,7 +1048,7 @@ function display_cff($atts) {
 
                             //... and the link is to an album then it most likely has photo attachments
                             $albumLinkArr1 = explode('photos/a.', $link);
-                            $albumLinkArr2 = explode('.', $albumLinkArr1[1]);
+                            if( isset($albumLinkArr1[1]) ) $albumLinkArr2 = explode('.', $albumLinkArr1[1]);
 
                             //If it has an album link then set the post type to be album
                             if( isset($albumLinkArr1[1]) ){
@@ -1049,7 +1088,7 @@ function display_cff($atts) {
                 $cff_date_custom = $atts[ 'datecustom' ];
 
                 $post_time = $news->created_time;
-                $cff_date = '<p class="cff-date" '.$cff_date_styles.'>'. $cff_date_before . ' ' . cff_getdate(strtotime($post_time), $cff_date_formatting, $cff_date_custom) . ' ' . $cff_date_after;
+                $cff_date = '<p class="cff-date" '.$cff_date_styles.'>'. $cff_date_before . ' ' . cff_getdate(strtotime($post_time), $cff_date_formatting, $cff_date_custom, $cff_date_translate_strings) . ' ' . $cff_date_after;
                 if($cff_date_position == 'below' || (!$cff_show_author && $cff_date_position == 'author') ) $cff_date .= '<span class="cff-date-dot">&nbsp;&middot;&nbsp;&nbsp;</span>';
                 $cff_date .= '</p>';
                 
@@ -1060,7 +1099,7 @@ function display_cff($atts) {
                 $cff_author .= '<a href="https://facebook.com/' . $news->from->id . '" '.$target.$cff_nofollow.' title="'.$news->from->name.' on Facebook" '.$cff_author_styles.'><div class="cff-author-text">';
 
                 if($cff_show_date && $cff_date_position !== 'above' && $cff_date_position !== 'below'){
-                    $cff_author .= '<p class="cff-page-name cff-author-date">'.$news->from->name.'</p>';
+                    $cff_author .= '<p class="cff-page-name cff-author-date" '.$cff_author_styles.'>'.$news->from->name.'</p>';
                     $cff_author .= $cff_date;
                 } else {
                     $cff_author .= '<span class="cff-page-name">'.$news->from->name.'</span>';
@@ -1495,7 +1534,11 @@ function display_cff($atts) {
                 $cff_post_item .= '</div>';
 
                 //PUSH TO ARRAY
-                $cff_posts_array = cff_array_push_assoc($cff_posts_array, strtotime($post_time), $cff_post_item);
+                if(!$cff_is_group){
+                    $cff_posts_array = cff_array_push_assoc($cff_posts_array, strtotime($post_time), $cff_post_item);
+                } else {
+                    $cff_posts_array = cff_array_push_assoc($cff_posts_array, $i_post, $cff_post_item);
+                }
 
             } // End post type check
 
@@ -1506,7 +1549,7 @@ function display_cff($atts) {
         } // End the loop
 
         //Sort the array in reverse order (newest first)
-        krsort($cff_posts_array);
+        if(!$cff_is_group) krsort($cff_posts_array);
 
     } // End ALL POSTS
 
@@ -1689,7 +1732,7 @@ function cff_wrap_span_callback($matches) {
 
 //2013-04-28T21:06:56+0000
 //Time stamp function - used for posts
-function cff_getdate($original, $date_format, $custom_date) {
+function cff_getdate($original, $date_format, $custom_date, $cff_date_translate_strings) {
     switch ($date_format) {
         
         case '2':
@@ -1730,52 +1773,21 @@ function cff_getdate($original, $date_format, $custom_date) {
             break;
         default:
             
-            $options = get_option('cff_style_settings');
-
-            $cff_second = isset( $options['cff_translate_second'] ) ? stripslashes( esc_attr( $options['cff_translate_second'] ) ) : '';
-            if ( empty($cff_second) ) $cff_second = 'second';
-
-            $cff_seconds = isset( $options['cff_translate_seconds'] ) ? stripslashes( esc_attr( $options['cff_translate_seconds'] ) ) : '';
-            if ( empty($cff_seconds) ) $cff_seconds = 'seconds';
-
-            $cff_minute = isset( $options['cff_translate_minute'] ) ? stripslashes( esc_attr( $options['cff_translate_minute'] ) ) : '';
-            if ( empty($cff_minute) ) $cff_minute = 'minute';
-
-            $cff_minutes = isset( $options['cff_translate_minutes'] ) ? stripslashes( esc_attr( $options['cff_translate_minutes'] ) ) : '';
-            if ( empty($cff_minutes) ) $cff_minutes = 'minutes';
-
-            $cff_hour = isset( $options['cff_translate_hour'] ) ? stripslashes( esc_attr( $options['cff_translate_hour'] ) ) : '';
-            if ( empty($cff_hour) ) $cff_hour = 'hour';
-
-            $cff_hours = isset( $options['cff_translate_hours'] ) ? stripslashes( esc_attr( $options['cff_translate_hours'] ) ) : '';
-            if ( empty($cff_hours) ) $cff_hours = 'hours';
-
-            $cff_day = isset( $options['cff_translate_day'] ) ? stripslashes( esc_attr( $options['cff_translate_day'] ) ) : '';
-            if ( empty($cff_day) ) $cff_day = 'day';
-
-            $cff_days = isset( $options['cff_translate_days'] ) ? stripslashes( esc_attr( $options['cff_translate_days'] ) ) : '';
-            if ( empty($cff_days) ) $cff_days = 'days';
-
-            $cff_week = isset( $options['cff_translate_week'] ) ? stripslashes( esc_attr( $options['cff_translate_week'] ) ) : '';
-            if ( empty($cff_week) ) $cff_week = 'week';
-
-            $cff_weeks = isset( $options['cff_translate_weeks'] ) ? stripslashes( esc_attr( $options['cff_translate_weeks'] ) ) : '';
-            if ( empty($cff_weeks) ) $cff_weeks = 'weeks';
-
-            $cff_month = isset( $options['cff_translate_month'] ) ? stripslashes( esc_attr( $options['cff_translate_month'] ) ) : '';
-            if ( empty($cff_month) ) $cff_month = 'month';
-
-            $cff_months = isset( $options['cff_translate_months'] ) ? stripslashes( esc_attr( $options['cff_translate_months'] ) ) : '';
-            if ( empty($cff_months) ) $cff_months = 'months';
-
-            $cff_year = isset( $options['cff_translate_year'] ) ? stripslashes( esc_attr( $options['cff_translate_year'] ) ) : '';
-            if ( empty($cff_year) ) $cff_year = 'year';
-
-            $cff_years = isset( $options['cff_translate_years'] ) ? stripslashes( esc_attr( $options['cff_translate_years'] ) ) : '';
-            if ( empty($cff_years) ) $cff_years = 'years';
-
-            $cff_ago = isset( $options['cff_translate_ago'] ) ? stripslashes( esc_attr( $options['cff_translate_ago'] ) ) : '';
-            if ( empty($cff_ago) ) $cff_ago = 'ago';
+            $cff_second = $cff_date_translate_strings['cff_translate_second'];
+            $cff_seconds = $cff_date_translate_strings['cff_translate_seconds'];
+            $cff_minute = $cff_date_translate_strings['cff_translate_minute'];
+            $cff_minutes = $cff_date_translate_strings['cff_translate_minutes'];
+            $cff_hour = $cff_date_translate_strings['cff_translate_hour'];
+            $cff_hours = $cff_date_translate_strings['cff_translate_hours'];
+            $cff_day = $cff_date_translate_strings['cff_translate_day'];
+            $cff_days = $cff_date_translate_strings['cff_translate_days'];
+            $cff_week = $cff_date_translate_strings['cff_translate_week'];
+            $cff_weeks = $cff_date_translate_strings['cff_translate_weeks'];
+            $cff_month = $cff_date_translate_strings['cff_translate_month'];
+            $cff_months = $cff_date_translate_strings['cff_translate_months'];
+            $cff_year = $cff_date_translate_strings['cff_translate_years'];
+            $cff_years = $cff_date_translate_strings['cff_translate_years'];
+            $cff_ago = $cff_date_translate_strings['cff_translate_ago'];
 
             
             $periods = array($cff_second, $cff_minute, $cff_hour, $cff_day, $cff_week, $cff_month, $cff_year, "decade");
@@ -1859,83 +1871,6 @@ function cff_eventdate($original, $date_format, $custom_date) {
         $print = date_i18n($custom_date, $original);
     }
     return $print;
-}
-//Time stamp function - used for comments
-function cff_timesince($original) {
-            
-    $options = get_option('cff_style_settings');
-
-    $cff_second = isset( $options['cff_translate_second'] ) ? stripslashes( esc_attr( $options['cff_translate_second'] ) ) : '';
-    if ( empty($cff_second) ) $cff_second = 'second';
-
-    $cff_seconds = isset( $options['cff_translate_seconds'] ) ? stripslashes( esc_attr( $options['cff_translate_seconds'] ) ) : '';
-    if ( empty($cff_seconds) ) $cff_seconds = 'seconds';
-
-    $cff_minute = isset( $options['cff_translate_minute'] ) ? stripslashes( esc_attr( $options['cff_translate_minute'] ) ) : '';
-    if ( empty($cff_minute) ) $cff_minute = 'minute';
-
-    $cff_minutes = isset( $options['cff_translate_minutes'] ) ? stripslashes( esc_attr( $options['cff_translate_minutes'] ) ) : '';
-    if ( empty($cff_minutes) ) $cff_minutes = 'minutes';
-
-    $cff_hour = isset( $options['cff_translate_hour'] ) ? stripslashes( esc_attr( $options['cff_translate_hour'] ) ) : '';
-    if ( empty($cff_hour) ) $cff_hour = 'hour';
-
-    $cff_hours = isset( $options['cff_translate_hours'] ) ? stripslashes( esc_attr( $options['cff_translate_hours'] ) ) : '';
-    if ( empty($cff_hours) ) $cff_hours = 'hours';
-
-    $cff_day = isset( $options['cff_translate_day'] ) ? stripslashes( esc_attr( $options['cff_translate_day'] ) ) : '';
-    if ( empty($cff_day) ) $cff_day = 'day';
-
-    $cff_days = isset( $options['cff_translate_days'] ) ? stripslashes( esc_attr( $options['cff_translate_days'] ) ) : '';
-    if ( empty($cff_days) ) $cff_days = 'days';
-
-    $cff_week = isset( $options['cff_translate_week'] ) ? stripslashes( esc_attr( $options['cff_translate_week'] ) ) : '';
-    if ( empty($cff_week) ) $cff_week = 'week';
-
-    $cff_weeks = isset( $options['cff_translate_weeks'] ) ? stripslashes( esc_attr( $options['cff_translate_weeks'] ) ) : '';
-    if ( empty($cff_weeks) ) $cff_weeks = 'weeks';
-
-    $cff_month = isset( $options['cff_translate_month'] ) ? stripslashes( esc_attr( $options['cff_translate_month'] ) ) : '';
-    if ( empty($cff_month) ) $cff_month = 'month';
-
-    $cff_months = isset( $options['cff_translate_months'] ) ? stripslashes( esc_attr( $options['cff_translate_months'] ) ) : '';
-    if ( empty($cff_months) ) $cff_months = 'months';
-
-    $cff_year = isset( $options['cff_translate_year'] ) ? stripslashes( esc_attr( $options['cff_translate_year'] ) ) : '';
-    if ( empty($cff_year) ) $cff_year = 'year';
-
-    $cff_years = isset( $options['cff_translate_years'] ) ? stripslashes( esc_attr( $options['cff_translate_years'] ) ) : '';
-    if ( empty($cff_years) ) $cff_years = 'years';
-
-    $cff_ago = isset( $options['cff_translate_ago'] ) ? stripslashes( esc_attr( $options['cff_translate_ago'] ) ) : '';
-    if ( empty($cff_ago) ) $cff_ago = 'ago';
-
-    
-    $periods = array($cff_second, $cff_minute, $cff_hour, $cff_day, $cff_week, $cff_month, $cff_year, "decade");
-    $periods_plural = array($cff_seconds, $cff_minutes, $cff_hours, $cff_days, $cff_weeks, $cff_months, $cff_years, "decade");
-
-    $lengths = array("60","60","24","7","4.35","12","10");
-    $now = time();
-    
-    // is it future date or past date
-    if($now > $original) {    
-        $difference = $now - $original;
-        $tense = $cff_ago;
-    } else {
-        $difference = $original - $now;
-        $tense = $cff_ago;
-    }
-    for($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++) {
-        $difference /= $lengths[$j];
-    }
-    
-    $difference = round($difference);
-    
-    if($difference != 1) {
-        $periods[$j] = $periods_plural[$j];
-    }
-    return "$difference $periods[$j] {$tense}";
-            
 }
 //Use custom stripos function if it's not available (only available in PHP 5+)
 if(!is_callable('stripos')){

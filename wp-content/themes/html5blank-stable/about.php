@@ -18,6 +18,7 @@
 						<?php echo types_render_field( "owners",
 						array( "alt" => "Lisa & Pascal", "proportional" => "false"
 					) ) ?>
+
 					</div>
 				</div>
 
@@ -42,4 +43,4 @@
 		<!-- /section -->
 	</main>
 
-<?php get_footer(); ?>
+	<?php get_footer(); ?>

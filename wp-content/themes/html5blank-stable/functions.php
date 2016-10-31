@@ -175,6 +175,8 @@ function add_slug_to_body_class($classes)
     return $classes;
 }
 
+
+
 // If Dynamic Sidebar Exists
 if (function_exists('register_sidebar'))
 {
@@ -189,11 +191,11 @@ if (function_exists('register_sidebar'))
         'after_title' => '</h3>'
     ));
 
-    // Main Content Slider
+    // Post Search
     register_sidebar(array(
-        'name' => __('Main Content Slider', 'html5blank'),
-        'description' => __('Contains Widget for Slider on Home Page', 'html5blank'),
-        'id' => 'home-page-slider',
+        'name' => __('Search For Posts', 'html5blank'),
+        'description' => __('Search for the Blog posts', 'html5blank'),
+        'id' => 'post-search',
         'before_widget' => '<div id="%1$s" class="%2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h3>',
@@ -349,7 +351,7 @@ function html5blankcomments($comment, $args, $depth)
 add_action('init', 'html5blank_header_scripts'); // Add Custom Scripts to wp_head
 add_action('wp_print_scripts', 'html5blank_conditional_scripts'); // Add Conditional Page Scripts
 add_action('get_header', 'enable_threaded_comments'); // Enable Threaded Comments
-add_action('wp_enqueue_scripts', 'html5blank_styles'); // Add Theme Stylesheet
+add_action('wp_enqueue_scripts', 'html5blank_styles', 100); // Add Theme Stylesheet
 add_action('init', 'register_html5_menu'); // Add HTML5 Blank Menu
 add_action('init', 'create_post_type_html5'); // Add our HTML5 Blank Custom Post Type
 add_action('widgets_init', 'my_remove_recent_comments_style'); // Remove inline Recent Comment Styles from wp_head()

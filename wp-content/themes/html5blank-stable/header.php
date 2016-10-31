@@ -24,7 +24,8 @@
         </script>
 
 	</head>
-	<body class="container-fluid" <?php body_class(); ?>
+	<body class="container-fluid" <?php body_class(); ?>>
+		<div class="wrapper">
 					<!-- nav -->
 					<nav class="navbar navbar-default">
 					  <div class="container-fluid nav-titles">
@@ -35,9 +36,9 @@
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 								</button>
-							</div>
-							<div class="logo pull-left">
-									<a href="<?php echo home_url(); ?>"><h1>Board Vibes</h1></a>
+								<div class="logo pull-left">
+										<a href="<?php echo home_url(); ?>"><h1>Board Vibes</h1></a>
+								</div>
 							</div>
 					    <!-- Collect the nav links, forms, and other content for toggling -->
 					    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

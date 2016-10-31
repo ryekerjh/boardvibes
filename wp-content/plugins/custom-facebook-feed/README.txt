@@ -1,9 +1,9 @@
 === Custom Facebook Feed ===
 Contributors: smashballoon
-Tags: Facebook, Facebook feed, Facebook posts, Facebook wall, Facebook events, Facebook page, Facebook group, Facebook groups, Facebook fans, Facebook likes, Facebook followers, Facebooks, Face book, posts, Facebook postings, Facebook feeds, Facebook pages, Facebook Like Box, Facebook plugin, Facebook plug-in, Facebook walls, Facebook hashtag, Facebook embed, Customizable Facebook Feed, custom, customizable, seo, responsive, mobile, social media
+Tags: Facebook, Facebook feed, Facebook posts, Facebook wall, Facebook events, Facebook page, Facebook group, Facebook fans, Facebook likes, Facebook followers, Face book, Facebook pages, Facebook Like Box, Facebook plugin, Facebook walls, custom, customizable, seo, responsive, mobile, social media
 Requires at least: 3.0
-Tested up to: 4.5
-Stable tag: 2.4.1.2
+Tested up to: 4.6
+Stable tag: 2.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,7 +58,7 @@ To display photos, videos, the number of likes, shares and comments for each Fac
 * Support is quick and effective
 * We're dedicated to providing the **most customizable**, **robust** and **well supported** Facebook feed plugin in the world!
 
-[View the reviews](http://wordpress.org/support/view/plugin-reviews/custom-facebook-feed) to see what other users are saying about the Custom Facebook Feed plugin.
+[View the reviews](https://wordpress.org/support/plugin/custom-facebook-feed/reviews/) to see what other users are saying about the Custom Facebook Feed plugin.
 
 == Installation ==
 
@@ -361,6 +361,25 @@ Credit iMarketing Factory - "The Importance of Facebook for Small Businesses"
 9. It's super easy to display your Facebook feed in any page or post
 
 == Changelog ==
+
+= 2.4.5 =
+* Tweak: Updated plugin links for new WordPress.org repo
+* Fix: Minor bug fixes
+
+= 2.4.4 =
+* New: If your Facebook posts have been created in more than one language on Facebook then it's now possible to display each language by using the `locale` setting in the shortcode. Eg: English: `[custom-facebook-feed locale=en_EN]`, German: `[custom-facebook-feed locale=de_DE]`
+* Fix: Fixed an issue with the order of group posts in some feeds
+
+= 2.4.3 =
+* Fix: Fixed a potential security vulnerability
+* Tested with upcoming WordPress 4.6 update
+
+= 2.4.2 =
+* Tweak: Group wall feed posts are now ordered based on recent activity, rather than by the date they were created, to better reflect the order on the Facebook Group wall.
+* Tweak: The "5 hours ago" date text strings can now be translated directly in the shortcode if you're displaying different feeds in different languages. See the bottom of the [Shortcode Options table](https://smashballoon.com/custom-facebook-feed/docs/shortcodes/) for more information.
+* Tweak: Created some specific [setup directions](https://smashballoon.com/custom-facebook-feed/docs/free/) for the free version.
+* Fix: Minor bug fixes
+
 = 2.4.1.2 =
 * Updated to be compatible with Facebook API version 2.6
 
