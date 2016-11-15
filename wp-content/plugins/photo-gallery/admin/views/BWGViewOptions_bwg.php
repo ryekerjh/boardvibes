@@ -559,15 +559,22 @@ class BWGViewOptions_bwg {
                         <label for="watermark_font"><?php _e('Advertisement font style:', 'bwg_back'); ?> </label>
                       </td>
                       <td>
-                        <select class="select_icon" name="watermark_font" id="watermark_font" style="width:150px;" onchange="preview_watermark()">
+                        <select name="watermark_font" id="watermark_font" class="select_icon bwg_font_select" style="width:150px;" onchange="preview_watermark()">
                           <?php
-                          foreach ($watermark_fonts as $watermark_font) {
+                          $google_fonts = WDWLibrary::get_google_fonts();
+                          $is_google_fonts = (in_array($row->watermark_font, $google_fonts) ) ? true : false;
+                          $watermark_font_families = ($is_google_fonts == true) ? $google_fonts : $watermark_fonts;
+                          foreach ($watermark_font_families as $watermark_font) {
                             ?>
                             <option value="<?php echo $watermark_font; ?>" <?php if ($row->watermark_font == $watermark_font) echo 'selected="selected"'; ?>><?php echo $watermark_font; ?></option>
                             <?php
                           }
                           ?>
                         </select>
+                        <input type="radio" name="watermark_google_fonts" id="watermark_google_fonts1" onchange="bwg_change_fonts('watermark_font', jQuery(this).attr('id'))" value="1" <?php if ($is_google_fonts) echo 'checked="checked"'; ?> />
+                        <label for="watermark_google_fonts1" id="watermark_google_fonts1_lbl"><?php echo __('Google fonts', 'bwg_back'); ?></label>
+                        <input type="radio" name="watermark_google_fonts" id="watermark_google_fonts0" onchange="bwg_change_fonts('watermark_font', '')" value="0" <?php if (!$is_google_fonts) echo 'checked="checked"'; ?> />
+                        <label for="watermark_google_fonts0" id="watermark_google_fonts0_lbl"><?php echo __('Default', 'bwg_back'); ?></label>
                         <div class="spider_description"></div>
                       </td>
                     </tr>

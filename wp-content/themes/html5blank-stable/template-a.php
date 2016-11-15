@@ -7,7 +7,6 @@
 		<div class="welcome">
 			<h1><?php the_title(); ?></h1>
 			<?php the_content(); ?>
-			<button type="button" name="button" class="btn btn-primary">Discover</button>
 		</div>
 	<?php endwhile; ?>
 

@@ -2,7 +2,7 @@
 
 	<main role="main" class="blog">
 		<!-- section -->
-		<section style="background:">
+		<section>
 
 		<?php if (have_posts()): while (have_posts()) : the_post(); ?>
 

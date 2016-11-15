@@ -13,8 +13,10 @@
 				<br class="clear">
 				<div class="col-sm-8 col-sm-offset-2 title-card">
 					<h1><?php the_title(); ?></h1>
-					<?php the_content(); ?>
-					<div class="owners col-xs-12 col-sm-4 col-sm-offset-4">
+					<div class="col-xs-12 col-sm-6 text-center">
+						<?php the_content(); ?>
+					</div>
+					<div class="owners col-xs-12 col-sm-6">
 						<?php echo types_render_field( "owners",
 						array( "alt" => "Lisa & Pascal", "proportional" => "false"
 					) ) ?>

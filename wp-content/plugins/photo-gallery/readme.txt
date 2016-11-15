@@ -4,7 +4,7 @@ Donate link: https://web-dorado.com/products/wordpress-photo-gallery-plugin.html
 Tags: album, image gallery, gallery, image, images, lightbox, photo, photo gallery, photos, responsive, thumbnail, widget
 Requires at least: 3.4
 Tested up to: 4.6 
-Stable tag: 1.3.13    
+Stable tag: 1.3.16    
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,23 @@ We recommend to use images with the width of 1200px to 1600px. In order to speed
 To enable the feature of adding Media Library images, go to Photo Gallery > Options > Global Options and set Import from Media Library option to Yes. After that you will be able to import photos from Media Library to Photo Gallery.     
 
 == Changelog ==
+
+= 1.3.16 =
+* Fixed: Ampersand in watermark and advertisement text.   
+* Fixed: Lightbox controlls toggle button on mobile.   
+* Added: Google fonts.    
+* Changed: UploadHandler class name to prevent conflict with some themes.   
+  
+= 1.3.15 =
+* Added: Images bulk rotate.   
+* Fixed: Messages in masonry album view.   
+* Fixed: Show info on image change effect end.    
+
+= 1.3.14 =
+* Fixed: Social Bulk Embed bug for facebook.    
+* Fixed: Add facebook album bug.    
+* Added: Tag select from shortcode.    
+* Fixed: Improved tag search.   
 
 = 1.3.13 =
 * Fixed: Instagram gallery autoupdate.   

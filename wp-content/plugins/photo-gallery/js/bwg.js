@@ -59,7 +59,7 @@ function save_tag(tag_id) {
        
       }
       else {
-        jQuery("#wordpress_message_1").css("display", "block");
+        jQuery("#wordpress_message_1").css("display", "none");
       }
     }  
   });
@@ -1244,4 +1244,19 @@ function bwg_bulk_actions(that, check) {
     return false;
   }
   return true;
+}
+
+function bwg_change_fonts(cont, google_fonts) {
+  var fonts;
+  if (jQuery("#" + google_fonts).is(":checked") == true) {
+    fonts = bwg_objectGGF;
+  }
+  else {
+    fonts = {'arial' : 'Arial', 'lucida grande' : 'Lucida grande', 'segoe ui' : 'Segoe ui', 'tahoma' : 'Tahoma', 'trebuchet ms' : 'Trebuchet ms', 'verdana' : 'Verdana', 'cursive' : 'Cursive', 'fantasy' : 'Fantasy', 'monospace' : 'Monospace', 'serif' : 'Serif'};
+  }
+  var fonts_option = "";
+  for (var i in fonts) {
+    fonts_option += '<option value="' + i + '">' + fonts[i] + '</option>';
+  }
+  jQuery("#" + cont).html(fonts_option);
 }

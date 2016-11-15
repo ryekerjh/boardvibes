@@ -2,14 +2,14 @@
 			<footer class="footer container-fluid" role="contentinfo">
 				<div class="inner-wrapper">
 						<div class="col-sm-4 col-xs-12 center social">
-							<a href="<?=types_render_field('facebook-link', array('output' => 'raw')) ?>" target="_blank"><i class="fa fa-facebook fa-3x " aria-hidden="true"></i></a>
-							<a href="<?=types_render_field('twitter-link', array('output' => 'raw')) ?>" target="_blank"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
-							<a href="<?=types_render_field('instagram-link', array('output' => 'raw')) ?>" target="_blank"><i class="fa fa-instagram fa-3x" aria-hidden="true"></i></a>
+							<a href="https://www.facebook.com/upcycledboards/" target="_blank"><i class="fa fa-facebook fa-3x " aria-hidden="true"></i></a>
+							<a href="https://www.twitter.com" target="_blank"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
+							<a href="https://www.instagram.com/board_vibes" target="_blank"><i class="fa fa-instagram fa-3x" aria-hidden="true"></i></a>
 						</div>
 						<!-- copyright -->
 						<p class="copyright col-sm-4 col-sm-offset-4 col-xs-12 center-text">
 							&copy; <?php echo date('Y'); ?> <?php _e(' '); ?> <?php bloginfo('name'); ?>. <?php _e('Powered by', 'RJH Web Design'); ?>
-							<a href="//ryekerjh.github.io/" target="_blank" title="Visit RJH Web Design">RJH Web Design</a>.
+							<a href="//ryekerjherndon.com/" target="_blank" title="Visit RJH Web Design">RJH Web Design</a>.
 						</p>
 						<!-- /copyright -->
 					</div>
